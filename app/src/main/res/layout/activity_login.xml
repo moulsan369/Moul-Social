@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#03A9F4"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main"
+        tools:ignore="ContentDescription" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/welcome_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:fontFamily="@font/bilbo"
+            android:text="Moul\nWorld of immortality"
+            android:textAlignment="center"
+            android:textColor="#616161"
+            android:textSize="60sp"
+            android:textStyle="bold|italic"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="7dp"
+            android:backgroundTint="#2196F3"
+            android:drawableStart="@drawable/tego"
+            android:fontFamily="@font/brawler"
+            android:gravity="center"
+            android:text="Log in to New World"
+            android:textColor="#212121"
+            tools:ignore="HardcodedText" />
+    </RelativeLayout>
+
+</RelativeLayout>
