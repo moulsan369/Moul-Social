@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641100524148",
+    "project_id": "moulsocial",
+    "storage_bucket": "moulsocial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641100524148:android:8584242ee97b895561ff21",
+        "android_client_info": {
+          "package_name": "com.ntu.moulsocial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe1kYJ8-bmiQmEK_vWKTP4JImT1Qc7Iio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

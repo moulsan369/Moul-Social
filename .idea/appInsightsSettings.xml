@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.ntu.moulsocial" />
+                  <option name="mobileSdkAppId" value="1:641100524148:android:8584242ee97b895561ff21" />
+                  <option name="projectId" value="moulsocial" />
+                  <option name="projectNumber" value="641100524148" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
