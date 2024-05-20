@@ -21,13 +21,9 @@ public class GitHubSignInActivity extends AppCompatActivity {
         WebView webView = new WebView(this);
         setContentView(webView);
 
-        // Enable JavaScript only if absolutely necessary
         webView.getSettings().setJavaScriptEnabled(true);
-
-        // Set a WebViewClient to handle redirects
         webView.setWebViewClient(new SecureWebViewClient());
 
-        // Load the GitHub OAuth authorization URL
         String authUrl = "https://github.com/login/oauth/authorize" +
                 "?client_id=" + CLIENT_ID +
                 "&redirect_uri=" + REDIRECT_URI +
@@ -52,12 +48,7 @@ public class GitHubSignInActivity extends AppCompatActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-            if (url.startsWith("https://github.com/") || url.startsWith(REDIRECT_URI)) {
-                return false;
-            }
-
-            return true;
+            return !url.startsWith("https://github.com/") && !url.startsWith(REDIRECT_URI);
         }
     }
 }

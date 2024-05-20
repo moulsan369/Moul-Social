@@ -42,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN_GITHUB = 1234;
 
-    FirebaseAuth auth;
-    GoogleSignInClient googleSignInClient;
+    private FirebaseAuth auth;
+    private GoogleSignInClient googleSignInClient;
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
                             AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
                             auth.signInWithCredential(authCredential).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-                                    auth = FirebaseAuth.getInstance();
                                     updateUI(auth.getCurrentUser());
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Failed to sign in: " + task.getException(), Toast.LENGTH_SHORT).show();
@@ -90,7 +89,8 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(LoginActivity.this, options);
 
         auth = FirebaseAuth.getInstance();
-        
+
+
         auth.signOut();
         googleSignInClient.signOut();
 
@@ -102,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
 
         ImageButton githubSignInButton = findViewById(R.id.img_btn_github);
         githubSignInButton.setOnClickListener(view -> signInWithGitHub());
-
     }
 
     private void signInWithGitHub() {
