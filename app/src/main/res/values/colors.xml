@@ -9,4 +9,6 @@
     <color name="teal_700">#FF03DAC5</color>
     <color name="blue_light">#AEE4FF</color>
     <color name="blue_dark">#6A9CFD</color>
+    <color name="button_default_color">#3b5998</color>
+    <color name="button_pressed_color">#2d4373</color>
 </resources>
