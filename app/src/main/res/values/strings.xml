@@ -5,4 +5,6 @@
     <string name="github_client_secret">d7ac5d0423bb7ffb6f0e63efe39fe0a41e1aeb20</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

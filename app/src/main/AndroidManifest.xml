@@ -27,9 +27,6 @@
         android:theme="@style/Theme.MoulSocial"
         tools:targetApi="31">
         <activity
-            android:name=".GitHubSignInActivity"
-            android:exported="true" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
