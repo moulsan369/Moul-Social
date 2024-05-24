@@ -69,19 +69,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add Friend"
-            android:background="@drawable/button_background"
-            android:textColor="@android:color/white"/>
+            android:backgroundTint="#03A9F4"
+            android:text="@string/add_friend"
+            android:theme="@style/FacebookButtonStyle" />
 
         <Button
-            android:id="@+id/button_message"
+            android:id="@+id/button_follow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:text="Follow"
-            android:background="@drawable/button_background"
-            android:textColor="@android:color/white"/>
+            android:layout_weight="1"
+            android:backgroundTint="#03A9F4"
+            android:text="@string/follow"
+            android:theme="@style/FacebookButtonStyle"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
     <!-- Divider -->

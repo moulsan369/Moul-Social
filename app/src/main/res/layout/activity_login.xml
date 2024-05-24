@@ -3,48 +3,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#03A9F4"
     tools:context=".LoginActivity">
 
+    <!-- Background image -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/main"
+        android:src="@drawable/ic_main"
         tools:ignore="ContentDescription" />
 
+    <!-- Overlay layout to ensure elements are on top of the background image -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:padding="16dp">
+
+        <!-- Welcome text, centered vertically and horizontally -->
+
+        <!-- Social media login buttons, aligned at the bottom center -->
 
         <TextView
             android:id="@+id/welcome_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
-            android:fontFamily="@font/bilbo"
+            android:layout_above="@+id/linearLayout"
+            android:layout_marginBottom="367dp"
+            android:fontFamily="@font/arizonia"
             android:text="Moul\nWorld of immortality"
             android:textAlignment="center"
-            android:textColor="#616161"
-            android:textSize="60sp"
+            android:textColor="#054750"
+            android:textSize="40sp"
             android:textStyle="bold|italic"
             tools:ignore="HardcodedText" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="32dp"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/img_btn_google"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/tego"
                 tools:ignore="ContentDescription" />
 
@@ -52,8 +59,8 @@
                 android:id="@+id/img_btn_github"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:srcCompat="@drawable/github"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_github"
                 tools:ignore="ContentDescription" />
 
         </LinearLayout>

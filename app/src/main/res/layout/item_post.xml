@@ -3,22 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/round_login_ui"
+    android:padding="8dp"
+    android:background="?attr/selectableItemBackground"
     android:layout_marginBottom="8dp">
 
-    <!-- Header của bài viết -->
+    <!-- Header of the post -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
 
         <ImageView
+            android:id="@+id/profile_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_profiles"
             android:layout_marginEnd="8dp"
-            android:contentDescription="@string/profile_image" />
+            android:contentDescription="@string/profile_image"
+            android:scaleType="centerCrop"
+            android:background="@drawable/profile_picture_background" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,39 +30,44 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/post_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/post_time"
-                android:textColor="@color/design_default_color_secondary"
-                android:textSize="14sp" />
+                android:text="@string/time"
+                android:textColor="#546E7A"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Nội dung của bài viết -->
+    <!-- Content of the post -->
     <TextView
+        android:id="@+id/post_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/post_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        android:text="@string/this_is_the_post_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp" />
 
-    <!-- Ảnh hoặc video của bài viết (nếu có) -->
+    <!-- Image or video of the post (if any) -->
     <ImageView
+        android:id="@+id/post_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/post_image_placeholder"
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/post_image" />
+        android:contentDescription="@string/post_image"
+        android:visibility="gone" /> <!-- Hide by default, make visible if there's an image -->
 
-    <!-- Các nút tương tác: thích, bình luận, chia sẻ -->
+    <!-- Interaction buttons: like, comment, share -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,28 +76,37 @@
         android:weightSum="3">
 
         <Button
+            android:id="@+id/like_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_like"
+            android:drawableStart="@drawable/ic_like"
             android:gravity="center"
-            style="@style/SocialButton" />
+            android:text="@string/like"
+            style="@style/twitterButton"
+            android:textAllCaps="false" />
 
         <Button
+            android:id="@+id/comment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_comt"
+            android:drawableStart="@drawable/ic_comt"
             android:gravity="center"
-            style="@style/SocialButton" />
+            android:text="@string/comment"
+            style="@style/twitterButton"
+            android:textAllCaps="false" />
 
         <Button
+            android:id="@+id/share_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_share"
+            android:drawableStart="@drawable/ic_share"
             android:gravity="center"
-            style="@style/SocialButton" />
+            android:text="@string/share"
+            style="@style/twitterButton"
+            android:textAllCaps="false" />
     </LinearLayout>
 
 </LinearLayout>

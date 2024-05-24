@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">Moul Social</string>
-    <string name="default_web_client_id">641100524148-su99fri3ah6no8vrl9mjopf7o5tq2c7f.apps.googleusercontent.com</string>
+    <string name="google_web_client_id">641100524148-su99fri3ah6no8vrl9mjopf7o5tq2c7f.apps.googleusercontent.com</string>
     <string name="github_client_id">Ov23liNZ8b53Kd6qf3kD</string>
     <string name="github_client_secret">d7ac5d0423bb7ffb6f0e63efe39fe0a41e1aeb20</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="profile_image">Profile Image</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -22,6 +20,8 @@
     <string name="notifications">Notifications</string>
     <string name="notification_icon_desc">Notification icon</string>
     <string name="add_friend">Add Friend</string>
-    <string name="message">Message</string>
+    <string name="follow">Follow</string>
     <string name="post_image_desc">Post image</string>
+    <string name="time">Time</string>
+    <string name="this_is_the_post_content">This is the post content.</string>
 </resources>
