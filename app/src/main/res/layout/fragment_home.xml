@@ -17,18 +17,18 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_profile"
+            android:src="@drawable/ic_profiles"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/profile_image" />
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/whats_on_your_mind"
-            android:textColor="@color/design_default_color_secondary"
             android:background="@drawable/rounded_edit_text_background"
-            android:padding="12dp"
             android:gravity="center_vertical"
+            android:minHeight="48dp"
+            android:padding="12dp"
+            android:textColor="@color/design_default_color_secondary"
             android:textSize="16sp" />
     </LinearLayout>
 

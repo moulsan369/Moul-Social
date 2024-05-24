@@ -16,4 +16,12 @@
     <string name="like">Like</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>
+    <string name="search_hint">Search</string>
+    <string name="search_icon_desc">Search icon</string>
+    <string name="profile_image_desc">Profile image</string>
+    <string name="notifications">Notifications</string>
+    <string name="notification_icon_desc">Notification icon</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="message">Message</string>
+    <string name="post_image_desc">Post image</string>
 </resources>
