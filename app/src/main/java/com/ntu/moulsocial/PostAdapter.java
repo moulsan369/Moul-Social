@@ -1,5 +1,6 @@
 package com.ntu.moulsocial;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +16,9 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private List<Post> postList;
-    private OnPostInteractionListener listener;
 
-    public interface OnPostInteractionListener {
-        void onLikeClicked(Post post, int position);
-        void onCommentClicked(Post post, int position);
-        void onShareClicked(Post post, int position);
-    }
-
-    public PostAdapter(List<Post> postList, OnPostInteractionListener listener) {
+    public PostAdapter(List<Post> postList) {
         this.postList = postList;
-        this.listener = listener;
     }
 
     @NonNull
@@ -41,11 +34,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Post post = postList.get(position);
 
         holder.textLikeCount.setText(String.valueOf(post.getLikeCount()));
-        if (post.isLiked()) {
-            holder.buttonLike.setImageResource(R.drawable.ic_like);
-        } else {
-            holder.buttonLike.setImageResource(R.drawable.ic_like_outline);
-        }
+        holder.buttonLike.setImageResource(post.isLiked() ? R.drawable.ic_like_filled : R.drawable.ic_like_outline);
 
         holder.buttonLike.setOnClickListener(v -> {
             if (post.isLiked()) {
@@ -56,12 +45,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 post.incrementLikeCount();
             }
             notifyItemChanged(position);
-            listener.onLikeClicked(post, position);
         });
 
-        holder.buttonComment.setOnClickListener(v -> listener.onCommentClicked(post, position));
+        holder.buttonComment.setOnClickListener(v -> {
+            // Open comment section or activity/fragment
+            // Example:
+            // Intent intent = new Intent(v.getContext(), CommentActivity.class);
+            // intent.putExtra("post", post);
+            // v.getContext().startActivity(intent);
+        });
 
-        holder.buttonShare.setOnClickListener(v -> listener.onShareClicked(post, position));
+        holder.buttonShare.setOnClickListener(v -> {
+            // Share post content
+            // Example:
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, post.getContent());
+            shareIntent.setType("text/plain");
+            v.getContext().startActivity(Intent.createChooser(shareIntent, "Share via"));
+        });
     }
 
     @Override

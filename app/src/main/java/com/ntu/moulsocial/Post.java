@@ -1,7 +1,5 @@
 package com.ntu.moulsocial;
 
-import org.w3c.dom.Comment;
-
 import java.util.ArrayList;
 import java.util.List;
 

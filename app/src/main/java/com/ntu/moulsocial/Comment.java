@@ -1,7 +1,7 @@
 package com.ntu.moulsocial;
 public class Comment {
-    private String username;
-    private String content;
+    private final String username;
+    private final String content;
 
     public Comment(String username, String content) {
         this.username = username;
@@ -16,3 +16,4 @@ public class Comment {
         return content;
     }
 }
+
