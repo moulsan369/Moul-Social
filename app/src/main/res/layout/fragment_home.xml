@@ -22,14 +22,28 @@
             android:contentDescription="@string/profile_image" />
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/rounded_edit_text_background"
             android:gravity="center_vertical"
             android:minHeight="48dp"
             android:padding="12dp"
             android:textColor="@color/design_default_color_secondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:hint="Bạn đang nghĩ gì?"
+            tools:ignore="Autofill,HardcodedText,TextFields" />
+
+        <Button
+            android:id="@+id/buttonCreatePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tạo bài viết"
+            android:background="?attr/selectableItemBackground"
+            android:textColor="@color/design_default_color_secondary"
+            android:padding="12dp"
+            android:layout_marginStart="8dp"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <!-- Đường kẻ ngang -->

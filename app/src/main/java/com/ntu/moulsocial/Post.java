@@ -1,33 +1,46 @@
 package com.ntu.moulsocial;
 
-public class Post {
-    private String username;
-    private String postTime;
-    private String postContent;
-    private int profileImage;
-    private int postImage;
+import org.w3c.dom.Comment;
 
-    public Post(String username, String postTime, String postContent, int profileImage, int postImage) {
-        this.username = username;
-        this.postTime = postTime;
-        this.postContent = postContent;
-        this.profileImage = profileImage;
-        this.postImage = postImage;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Post {
+    private int likeCount;
+    private boolean liked;
+    private List<Comment> comments;
+
+    public Post(int likeCount, boolean liked) {
+        this.likeCount = likeCount;
+        this.liked = liked;
+        this.comments = new ArrayList<>();
     }
 
-    // Getters and setters
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public int getLikeCount() {
+        return likeCount;
+    }
 
-    public String getPostTime() { return postTime; }
-    public void setPostTime(String postTime) { this.postTime = postTime; }
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
 
-    public String getPostContent() { return postContent; }
-    public void setPostContent(String postContent) { this.postContent = postContent; }
+    public void decrementLikeCount() {
+        this.likeCount--;
+    }
 
-    public int getProfileImage() { return profileImage; }
-    public void setProfileImage(int profileImage) { this.profileImage = profileImage; }
+    public boolean isLiked() {
+        return liked;
+    }
 
-    public int getPostImage() { return postImage; }
-    public void setPostImage(int postImage) { this.postImage = postImage; }
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -7,7 +8,6 @@
     android:background="?attr/selectableItemBackground"
     android:layout_marginBottom="8dp">
 
-    <!-- Header of the post -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,11 +18,12 @@
             android:id="@+id/profile_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_profiles"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/profile_picture_background"
             android:contentDescription="@string/profile_image"
             android:scaleType="centerCrop"
-            android:background="@drawable/profile_picture_background" />
+            android:src="@drawable/profile_picture_background"
+            tools:ignore="ImageContrastCheck" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -33,30 +34,31 @@
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/username"
+                android:text="Username"
                 android:textStyle="bold"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/post_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/time"
+                android:text="Time"
                 android:textColor="#546E7A"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Content of the post -->
     <TextView
         android:id="@+id/post_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/this_is_the_post_content"
+        android:text="This is the post content"
         android:layout_marginTop="4dp"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:ignore="HardcodedText" />
 
-    <!-- Image or video of the post (if any) -->
     <ImageView
         android:id="@+id/post_image"
         android:layout_width="match_parent"
@@ -65,9 +67,8 @@
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
         android:contentDescription="@string/post_image"
-        android:visibility="gone" /> <!-- Hide by default, make visible if there's an image -->
+        android:visibility="visible" /> <!-- Change visibility based on if there's an image -->
 
-    <!-- Interaction buttons: like, comment, share -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,38 +76,36 @@
         android:layout_marginTop="8dp"
         android:weightSum="3">
 
-        <Button
+        <ImageButton
             android:id="@+id/like_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_like"
-            android:gravity="center"
-            android:text="@string/like"
-            style="@style/twitterButton"
-            android:textAllCaps="false" />
+            android:backgroundTint="@color/teal_700"
+            android:padding="8dp"
+            android:src="@drawable/ic_like"
+            tools:ignore="ContentDescription,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-        <Button
+        <ImageButton
             android:id="@+id/comment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_comt"
-            android:gravity="center"
-            android:text="@string/comment"
-            style="@style/twitterButton"
-            android:textAllCaps="false" />
+            android:backgroundTint="@color/teal_700"
+            android:contentDescription="TODO"
+            android:padding="8dp"
+            android:src="@drawable/ic_comment"
+            tools:ignore="ContentDescription,HardcodedText,TouchTargetSizeCheck" />
 
-        <Button
+        <ImageButton
             android:id="@+id/share_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_share"
-            android:gravity="center"
-            android:text="@string/share"
-            style="@style/twitterButton"
-            android:textAllCaps="false" />
+            android:backgroundTint="@color/teal_700"
+            android:padding="8dp"
+            android:src="@drawable/ic_share"
+            tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
     </LinearLayout>
 
 </LinearLayout>

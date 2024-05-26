@@ -42,7 +42,7 @@
                 android:id="@+id/textView_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Name"
+                android:text="@string/username"
                 android:textSize="24sp"
                 android:textStyle="bold"/>
 
@@ -50,7 +50,7 @@
                 android:id="@+id/textView_basic_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Basic info here"
+                android:text="@string/basic_info_here"
                 android:textSize="16sp"
                 android:textColor="@android:color/darker_gray"/>
         </LinearLayout>
@@ -71,7 +71,7 @@
             android:layout_weight="1"
             android:backgroundTint="#03A9F4"
             android:text="@string/add_friend"
-            android:theme="@style/FacebookButtonStyle" />
+            android:theme="@style/twitterButton" />
 
         <Button
             android:id="@+id/button_follow"
@@ -81,7 +81,7 @@
             android:layout_weight="1"
             android:backgroundTint="#03A9F4"
             android:text="@string/follow"
-            android:theme="@style/FacebookButtonStyle"
+            android:theme="@style/twitterButton"
             tools:ignore="ButtonStyle" />
     </LinearLayout>
 

@@ -24,4 +24,5 @@
     <string name="post_image_desc">Post image</string>
     <string name="time">Time</string>
     <string name="this_is_the_post_content">This is the post content.</string>
+    <string name="basic_info_here">Basic info here</string>
 </resources>
