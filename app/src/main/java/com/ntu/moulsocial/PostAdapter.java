@@ -12,49 +12,47 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
-    private final List<Post> posts;
 
-    public PostAdapter(List<Post> posts, Context context) {
+    private final List<ItemPost> posts;
+    private final Context context;
+    private final OnPostInteractionListener listener;
+
+    public interface OnPostInteractionListener {
+        void onCommentClicked(ItemPost post);
+        void onLikeClicked(ItemPost post);
+        void onShareClicked(ItemPost post);
+    }
+
+    public PostAdapter(Context context, List<ItemPost> posts, OnPostInteractionListener listener) {
+        this.context = context;
         this.posts = posts;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
         return new PostViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-        Post post = posts.get(position);
+        ItemPost post = posts.get(position);
 
-        holder.username.setText(post.getUsername());
-        holder.postTime.setText(post.getPostTime());
-        holder.postContent.setText(post.getPostContent());
+        holder.usernameTextView.setText(post.getUsername());
+        holder.postTimeTextView.setText(post.getPostTime());
+        holder.postContentTextView.setText(post.getPostContent());
+        holder.profileImageView.setImageResource(post.getProfileImage());
+        holder.postImageView.setImageResource(post.getPostImage());
 
-        // Set up image visibility
-        if (post.getPostImage() != null) {
-            holder.postImage.setVisibility(View.VISIBLE);
-            holder.postImage.setImageBitmap(post.getPostImage());
-        } else {
-            holder.postImage.setVisibility(View.GONE);
-        }
-
+        holder.commentButton.setOnClickListener(v -> listener.onCommentClicked(post));
         holder.likeButton.setOnClickListener(v -> {
-            post.incrementLikeCount();
-            holder.likeCount.setText(post.getLikeCount() + " likes");
+            post.setLiked(!post.isLiked());
+            notifyItemChanged(position);
+            listener.onLikeClicked(post);
         });
-
-        holder.commentButton.setOnClickListener(v -> {
-            // Handle comment button click
-        });
-
-        holder.shareButton.setOnClickListener(v -> {
-            // Handle share button click
-        });
-
-        holder.likeCount.setText(post.getLikeCount() + " likes");
+        holder.shareButton.setOnClickListener(v -> listener.onShareClicked(post));
     }
 
     @Override
@@ -62,22 +60,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return posts.size();
     }
 
-    static class PostViewHolder extends RecyclerView.ViewHolder {
-        TextView username, postTime, postContent, likeCount;
-        ImageView postImage, profileImage;
-        ImageButton likeButton, commentButton, shareButton;
+    public static class PostViewHolder extends RecyclerView.ViewHolder {
+        TextView usernameTextView;
+        TextView postTimeTextView;
+        TextView postContentTextView;
+        ImageView profileImageView;
+        ImageView postImageView;
+        ImageButton commentButton;
+        ImageButton likeButton;
+        ImageButton shareButton;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
-            username = itemView.findViewById(R.id.username);
-            postTime = itemView.findViewById(R.id.post_time);
-            postContent = itemView.findViewById(R.id.post_content);
-            postImage = itemView.findViewById(R.id.post_image);
-            profileImage = itemView.findViewById(R.id.profile_image);
-            likeButton = itemView.findViewById(R.id.like_button);
+            usernameTextView = itemView.findViewById(R.id.username);
+            postTimeTextView = itemView.findViewById(R.id.post_time);
+            postContentTextView = itemView.findViewById(R.id.post_content);
+            profileImageView = itemView.findViewById(R.id.profile_image);
+            postImageView = itemView.findViewById(R.id.post_image);
             commentButton = itemView.findViewById(R.id.comment_button);
+            likeButton = itemView.findViewById(R.id.like_button);
             shareButton = itemView.findViewById(R.id.share_button);
-            likeCount = itemView.findViewById(R.id.textLikeCount);
         }
     }
+
 }
