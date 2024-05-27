@@ -1,50 +1,50 @@
 package com.ntu.moulsocial;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private RecyclerView recyclerViewPosts;
-    private EditText editTextComment;
-    private Button buttonSendComment;
+    private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postList;
+    private EditText postContentEditText;
+    private Button createPostButton;
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
-        editTextComment = view.findViewById(R.id.editTextComment);
-        buttonSendComment = view.findViewById(R.id.buttonSendComment);
+        recyclerView = view.findViewById(R.id.recyclerViewPosts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize post list and adapter
         postList = new ArrayList<>();
-        postAdapter = new PostAdapter(postList);
-        recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewPosts.setAdapter(postAdapter);
+        postAdapter = new PostAdapter(postList, getContext());
+        recyclerView.setAdapter(postAdapter);
 
-        buttonSendComment.setOnClickListener(v -> {
-            String commentText = editTextComment.getText().toString().trim();
-            if (!commentText.isEmpty()) {
-                // Add comment to the first post for simplicity
-                Post firstPost = postList.get(0);
-                firstPost.addComment(new Comment("Username", commentText));
-                postAdapter.notifyItemChanged(0);
-                editTextComment.setText("");
+        postContentEditText = view.findViewById(R.id.editTextPostContent);
+        createPostButton = view.findViewById(R.id.buttonCreatePost);
+
+        createPostButton.setOnClickListener(v -> {
+            String content = postContentEditText.getText().toString();
+            if (!content.isEmpty()) {
+                Post newPost = new Post("Username", "Just now", content, null, 0);
+                postList.add(0, newPost);
+                postAdapter.notifyItemInserted(0);
+                recyclerView.smoothScrollToPosition(0);
+                postContentEditText.setText("");
             }
         });
 

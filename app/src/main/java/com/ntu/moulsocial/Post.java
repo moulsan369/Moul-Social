@@ -1,17 +1,36 @@
 package com.ntu.moulsocial;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.graphics.Bitmap;
 
 public class Post {
+    private final String username;
+    private final String postTime;
+    private final String postContent;
+    private final Bitmap postImage;
     private int likeCount;
-    private boolean liked;
-    private List<Comment> comments;
 
-    public Post(int likeCount, boolean liked) {
+    public Post(String username, String postTime, String postContent, Bitmap postImage, int likeCount) {
+        this.username = username;
+        this.postTime = postTime;
+        this.postContent = postContent;
+        this.postImage = postImage;
         this.likeCount = likeCount;
-        this.liked = liked;
-        this.comments = new ArrayList<>();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPostTime() {
+        return postTime;
+    }
+
+    public String getPostContent() {
+        return postContent;
+    }
+
+    public Bitmap getPostImage() {
+        return postImage;
     }
 
     public int getLikeCount() {
@@ -19,26 +38,6 @@ public class Post {
     }
 
     public void incrementLikeCount() {
-        this.likeCount++;
-    }
-
-    public void decrementLikeCount() {
-        this.likeCount--;
-    }
-
-    public boolean isLiked() {
-        return liked;
-    }
-
-    public void setLiked(boolean liked) {
-        this.liked = liked;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
+        likeCount++;
     }
 }

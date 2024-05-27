@@ -108,4 +108,13 @@
             tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textLikeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 likes"
+        android:layout_marginTop="4dp"
+        android:textSize="12sp"
+        android:textColor="@color/teal_700"
+        tools:ignore="HardcodedText" />
 </LinearLayout>
