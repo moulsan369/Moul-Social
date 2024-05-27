@@ -1,16 +1,18 @@
 package com.ntu.moulsocial;
 
-/**
- * Represents a social media post.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemPost {
-    private String username;
-    private String postTime;
-    private String postContent;
-    private int profileImage;
-    private int postImage;
+    private final String username;
+    private final String postTime;
+    private final String postContent;
+    private final int profileImage;
+    private final int postImage;
     private boolean isLiked;
-    
+    private int likeCount;
+    private final List<String> comments;
+
     public ItemPost(String username, String postTime, String postContent, int profileImage, int postImage) {
         this.username = username;
         this.postTime = postTime;
@@ -18,8 +20,11 @@ public class ItemPost {
         this.profileImage = profileImage;
         this.postImage = postImage;
         this.isLiked = false;
+        this.likeCount = 0;
+        this.comments = new ArrayList<>();
     }
 
+    // Getters and setters
     public String getUsername() {
         return username;
     }
@@ -48,7 +53,28 @@ public class ItemPost {
         isLiked = liked;
     }
 
-    public String getContent() {
-        return postContent;
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decrementLikeCount() {
+        this.likeCount--;
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void addComment(String comment) {
+        this.comments.add(comment);
+    }
+
+    public int getCommentCount() {
+        return comments.size();
     }
 }
+

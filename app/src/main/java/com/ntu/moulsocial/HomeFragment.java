@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,18 +74,21 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostInteract
     @Override
     public void onCommentClicked(ItemPost post) {
         // Handle the comment click event
-        Toast.makeText(getContext(), "Comment clicked on post: " + post.getContent(), Toast.LENGTH_SHORT).show();
+        CommentDialog dialog = new CommentDialog(getContext(), post);
+        dialog.show();
     }
+
+
 
     @Override
     public void onLikeClicked(ItemPost post) {
         // Handle the like click event
-        Toast.makeText(getContext(), "Like clicked on post: " + post.getContent(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Like clicked on post: " + post.getPostContent(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onShareClicked(ItemPost post) {
         // Handle the share click event
-        Toast.makeText(getContext(), "Share clicked on post: " + post.getContent(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Share clicked on post: " + post.getPostContent(), Toast.LENGTH_SHORT).show();
     }
 }

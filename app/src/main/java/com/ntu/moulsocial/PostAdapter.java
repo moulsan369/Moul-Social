@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.BreakIterator;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
@@ -36,6 +38,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return new PostViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         ItemPost post = posts.get(position);
@@ -46,14 +49,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.profileImageView.setImageResource(post.getProfileImage());
         holder.postImageView.setImageResource(post.getPostImage());
 
+        // Update like count display
+        holder.textLikeCount.setText(context.getResources().getQuantityString(R.plurals.like_count, post.getLikeCount(), post.getLikeCount()));
+
+        // Update comment count display
+        holder.text_comment_count.setText(String.format("%d comments", post.getCommentCount()));
+
         holder.commentButton.setOnClickListener(v -> listener.onCommentClicked(post));
         holder.likeButton.setOnClickListener(v -> {
-            post.setLiked(!post.isLiked());
+            if (post.isLiked()) {
+                post.setLiked(false);
+                post.decrementLikeCount();
+            } else {
+                post.setLiked(true);
+                post.incrementLikeCount();
+            }
             notifyItemChanged(position);
             listener.onLikeClicked(post);
         });
         holder.shareButton.setOnClickListener(v -> listener.onShareClicked(post));
     }
+
 
     @Override
     public int getItemCount() {
@@ -61,6 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
+        public BreakIterator text_comment_count;
         TextView usernameTextView;
         TextView postTimeTextView;
         TextView postContentTextView;
@@ -69,6 +86,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         ImageButton commentButton;
         ImageButton likeButton;
         ImageButton shareButton;
+        TextView textLikeCount; // New TextView for like count
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,7 +98,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             commentButton = itemView.findViewById(R.id.comment_button);
             likeButton = itemView.findViewById(R.id.like_button);
             shareButton = itemView.findViewById(R.id.share_button);
+            textLikeCount = itemView.findViewById(R.id.textLikeCount); // Initialize the new TextView
         }
     }
-
 }

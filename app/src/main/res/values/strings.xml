@@ -25,4 +25,13 @@
     <string name="time">Time</string>
     <string name="this_is_the_post_content">This is the post content.</string>
     <string name="basic_info_here">Basic info here</string>
+    <string name="comments">Comments</string>
+    <string name="write_a_comment">Write a comment...</string>
+    <string name="post">Post</string>
+
+    <!-- Add plurals here -->
+    <plurals name="like_count">
+        <item quantity="one">%d like</item>
+        <item quantity="other">%d likes</item>
+    </plurals>
 </resources>
