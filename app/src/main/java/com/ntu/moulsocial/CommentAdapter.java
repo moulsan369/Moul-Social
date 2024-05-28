@@ -10,38 +10,36 @@ import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private List<String> comments;
+    private final List<Comment> commentList;
 
-    public CommentAdapter(List<String> comments) {
-        this.comments = comments;
+    public CommentAdapter(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false);
         return new CommentViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        String comment = comments.get(position);
-        holder.commentTextView.setText(comment);
+        Comment comment = commentList.get(position);
+        holder.textViewContent.setText(comment.getContent());
     }
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return commentList.size();
     }
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
-        TextView commentTextView;
+        TextView textViewContent;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-            commentTextView = itemView.findViewById(android.R.id.text1);
+            textViewContent = itemView.findViewById(R.id.textViewCommentContent);
         }
     }
 }
-
-
