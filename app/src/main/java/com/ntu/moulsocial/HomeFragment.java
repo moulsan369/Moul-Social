@@ -104,11 +104,28 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostInteract
 
     @Override
     public void onCommentClicked(int position) {
-        // Handle comment action
+        showCommentDialog(position);
     }
 
     @Override
     public void onShareClicked(int position) {
-        // Handle share action
+        sharePost(position);
+    }
+
+    private void showCommentDialog(int position) {
+        CommentDialog commentDialog = new CommentDialog(getContext(), comment -> {
+            postList.get(position).addComment(new Comment(comment));
+            postAdapter.notifyItemChanged(position);
+        });
+        commentDialog.show();
+    }
+
+    private void sharePost(int position) {
+        Post post = postList.get(position);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, post.getContent());
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, "Share post"));
     }
 }

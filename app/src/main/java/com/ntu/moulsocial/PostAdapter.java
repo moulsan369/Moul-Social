@@ -1,5 +1,9 @@
 package com.ntu.moulsocial;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
-
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
@@ -34,23 +38,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post post = postList.get(position);
-        holder.username.setText("Username");
-        holder.postTime.setText("2 hours ago");
-        holder.postContent.setText(post.getContent());
+
+        holder.textViewContent.setText(post.getContent());
+        holder.textViewLikeCount.setText(String.valueOf(post.getLikeCount()));
+        holder.imageButtonLike.setImageResource(post.isLiked() ? R.drawable.ic_liked : R.drawable.ic_like);
+
+        holder.imageButtonLike.setOnClickListener(v -> listener.onLikeClicked(position));
+        holder.imageButtonComment.setOnClickListener(v -> listener.onCommentClicked(position));
+        holder.imageButtonShare.setOnClickListener(v -> listener.onShareClicked(position));
 
         if (post.getImageUri() != null) {
-            holder.postImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(post.getImageUri()).into(holder.postImage);
+            try {
+                Uri imageUri = Uri.parse(post.getImageUri());
+                InputStream inputStream = holder.itemView.getContext().getContentResolver().openInputStream(imageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                holder.imageViewPostImage.setImageBitmap(bitmap);
+                holder.imageViewPostImage.setVisibility(View.VISIBLE);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                holder.imageViewPostImage.setVisibility(View.GONE);
+            }
         } else {
-            holder.postImage.setVisibility(View.GONE);
+            holder.imageViewPostImage.setVisibility(View.GONE);
         }
-
-        holder.likeButton.setImageResource(post.isLiked() ? R.drawable.ic_liked : R.drawable.ic_like);
-        holder.likeCount.setText(String.valueOf(post.getLikeCount()));
-
-        holder.likeButton.setOnClickListener(v -> listener.onLikeClicked(position));
-        holder.commentButton.setOnClickListener(v -> listener.onCommentClicked(position));
-        holder.shareButton.setOnClickListener(v -> listener.onShareClicked(position));
     }
 
     @Override
@@ -59,21 +69,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        ImageView profileImage, postImage;
-        TextView username, postTime, postContent, likeCount;
-        ImageButton likeButton, commentButton, shareButton;
+        TextView textViewContent, textViewLikeCount;
+        ImageButton imageButtonLike, imageButtonComment, imageButtonShare;
+        ImageView imageViewPostImage;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
-            profileImage = itemView.findViewById(R.id.profile_image);
-            postImage = itemView.findViewById(R.id.post_image);
-            username = itemView.findViewById(R.id.username);
-            postTime = itemView.findViewById(R.id.post_time);
-            postContent = itemView.findViewById(R.id.post_content);
-            likeCount = itemView.findViewById(R.id.like_count);
-            likeButton = itemView.findViewById(R.id.like_button);
-            commentButton = itemView.findViewById(R.id.comment_button);
-            shareButton = itemView.findViewById(R.id.share_button);
+            textViewContent = itemView.findViewById(R.id.textViewPostContent);
+            textViewLikeCount = itemView.findViewById(R.id.textViewLikeCount);
+            imageButtonLike = itemView.findViewById(R.id.imageButtonLike);
+            imageButtonComment = itemView.findViewById(R.id.imageButtonComment);
+            imageButtonShare = itemView.findViewById(R.id.imageButtonShare);
+            imageViewPostImage = itemView.findViewById(R.id.imageViewPostImage);
         }
     }
 
