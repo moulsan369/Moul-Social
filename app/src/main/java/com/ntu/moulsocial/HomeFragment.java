@@ -114,7 +114,8 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostInteract
 
     private void showCommentDialog(int position) {
         CommentDialog commentDialog = new CommentDialog(getContext(), comment -> {
-            postList.get(position).addComment(new Comment(comment));
+            Post post = postList.get(position);
+            post.addComment(new Comment(comment, null)); // Assuming profile picture uri is null for now
             postAdapter.notifyItemChanged(position);
         });
         commentDialog.show();

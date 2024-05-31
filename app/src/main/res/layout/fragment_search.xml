@@ -1,42 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".SearchFragment">
+    android:padding="8dp">
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/editTextSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/search_bar_background"
+        android:hint="Search..."
         android:padding="8dp"
-        android:layout_marginBottom="16dp"
-        tools:ignore="UselessParent">
+        android:background="@android:drawable/editbox_background"
+        android:drawablePadding="8dp"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:inputType="text" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_searchs"
-            android:contentDescription="@string/search_icon_desc"
-            android:layout_gravity="center_vertical"
-            app:tint="@color/colorPrimary" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:hint="@string/search_hint"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:paddingStart="8dp"
-            tools:ignore="Autofill,RtlSymmetry,TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSearchResults"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp" />
 </LinearLayout>

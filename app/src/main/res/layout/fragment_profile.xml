@@ -8,11 +8,12 @@
 
     <!-- Cover Photo -->
     <ImageView
-        android:id="@+id/imageView_cover_photo"
+        android:id="@+id/imageViewCoverPhoto"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/cover_photo_placeholder" />
+        android:src="@drawable/cover_photo_placeholder"
+        android:contentDescription="@string/cover_photo" />
 
     <!-- Profile Picture and Basic Info -->
     <LinearLayout
@@ -22,14 +23,15 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/imageView_profile_picture"
+            android:id="@+id/imageViewProfilePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/profile_picture_placeholder"
             android:scaleType="centerCrop"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/profile_picture_background"/>
+            android:background="@drawable/profile_picture_background"
+            android:contentDescription="@string/profile_picture"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -39,7 +41,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/textView_name"
+                android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
@@ -47,7 +49,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/textView_basic_info"
+                android:id="@+id/textViewBasicInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/basic_info_here"
@@ -65,7 +67,7 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/button_add_friend"
+            android:id="@+id/buttonAddFriend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,7 +76,7 @@
             android:theme="@style/twitterButton" />
 
         <Button
-            android:id="@+id/button_follow"
+            android:id="@+id/buttonFollow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -95,7 +97,7 @@
 
     <!-- RecyclerView for Posts -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_posts"
+        android:id="@+id/recyclerViewPosts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

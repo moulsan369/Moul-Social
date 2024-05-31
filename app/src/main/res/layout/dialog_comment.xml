@@ -9,21 +9,14 @@
         android:id="@+id/editTextComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Write a comment..."
+        android:hint="@string/enter_your_comment"
         android:inputType="textMultiLine"
-        android:minLines="1"
-        android:maxLines="3"
-        android:gravity="top"
-        android:background="@drawable/edittext_background"
-        android:padding="8dp"
-        android:layout_marginBottom="8dp" />
+        android:minHeight="100dp"/>
 
     <Button
-        android:id="@+id/buttonAddComment"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonSubmit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add"
-        android:background="?attr/selectableItemBackground"
-        android:padding="8dp" />
-
+        android:text="@string/submit"
+        android:layout_marginTop="8dp"/>
 </LinearLayout>

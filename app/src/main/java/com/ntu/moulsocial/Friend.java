@@ -1,16 +1,16 @@
 package com.ntu.moulsocial;
 
-public class Comment {
-    private String content;
+public class Friend {
+    private String name;
     private String profilePictureUri;
 
-    public Comment(String content, String profilePictureUri) {
-        this.content = content;
+    public Friend(String name, String profilePictureUri) {
+        this.name = name;
         this.profilePictureUri = profilePictureUri;
     }
 
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 
     public String getProfilePictureUri() {

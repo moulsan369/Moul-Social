@@ -28,6 +28,13 @@
     <string name="comments">Comments</string>
     <string name="write_a_comment">Write a comment...</string>
     <string name="post">Post</string>
+    <string name="photo">Photo</string>
+    <string name="cover_photo">cove photo</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="enter_your_comment">Enter your comment</string>
+    <string name="submit">Submit</string>
+    <string name="friend_name">Friend Name</string>
+    <string name="notification">Notification</string>
 
     <!-- Add plurals here -->
     <plurals name="like_count">

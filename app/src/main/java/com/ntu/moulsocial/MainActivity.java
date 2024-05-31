@@ -1,63 +1,47 @@
-
 package com.ntu.moulsocial;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
-    private FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
-        frameLayout = findViewById(R.id.frame_layout);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                int itemID = item.getItemId();
-
-                if (itemID == R.id.navigation_home){
-                    loadFragment(new HomeFragment(),false);
-                } else if (itemID == R.id.navigation_search) {
-                    loadFragment(new SearchFragment(),false);
-                } else if (itemID == R.id.navigation_friends){
-                    loadFragment(new FriendsFragment(),false);
-                } else if (itemID == R.id.navigation_notifications){
-                    loadFragment(new NotificationsFragment(),false);
-                } else if (itemID == R.id.navigation_profile){
-                    loadFragment(new ProfileFragment(), false);
-                }
-
-                return true;
+            if (itemId == R.id.navigation_home) {
+                selectedFragment = new HomeFragment();
+            } else if (itemId == R.id.navigation_friends) {
+                selectedFragment = new FriendsFragment();
+            } else if (itemId == R.id.navigation_notifications) {
+                selectedFragment = new NotificationsFragment();
+            } else if (itemId == R.id.navigation_search) {
+                selectedFragment = new SearchFragment();
+            } else if (itemId == R.id.navigation_profile) {
+                selectedFragment = new ProfileFragment();
             }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            }
+            return true;
         });
-        loadFragment(new HomeFragment(), true);
-    }
 
-    private void loadFragment(Fragment fragment, boolean isAppInits){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        if(isAppInits){
-            fragmentTransaction.add(R.id.frame_layout, fragment);
-        } else{
-            fragmentTransaction.replace(R.id.frame_layout, fragment);
+        // Set default fragment
+        if (savedInstanceState == null) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         }
-        fragmentTransaction.commit();
     }
 }
