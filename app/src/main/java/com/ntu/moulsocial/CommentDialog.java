@@ -8,8 +8,7 @@ import android.widget.EditText;
 
 public class CommentDialog extends Dialog {
     private EditText editTextComment;
-    private Button buttonSubmit;
-    private OnCommentSubmitListener listener;
+    private final OnCommentSubmitListener listener;
 
     public interface OnCommentSubmitListener {
         void onCommentSubmit(String comment);
@@ -26,7 +25,7 @@ public class CommentDialog extends Dialog {
         setContentView(R.layout.dialog_comment);
 
         editTextComment = findViewById(R.id.editTextComment);
-        buttonSubmit = findViewById(R.id.buttonSubmit);
+        Button buttonSubmit = findViewById(R.id.buttonSubmit);
 
         buttonSubmit.setOnClickListener(v -> {
             String comment = editTextComment.getText().toString().trim();

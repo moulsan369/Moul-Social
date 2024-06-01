@@ -1,7 +1,7 @@
 package com.ntu.moulsocial;
 
 public class Notification {
-    private String content;
+    private final String content;
 
     public Notification(String content) {
         this.content = content;

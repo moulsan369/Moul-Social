@@ -24,8 +24,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         void onShareClicked(int position);
     }
 
-    private List<Post> postList;
-    private OnPostInteractionListener listener;
+    private final List<Post> postList;
+    private final OnPostInteractionListener listener;
 
     public PostAdapter(List<Post> postList, OnPostInteractionListener listener) {
         this.postList = postList;

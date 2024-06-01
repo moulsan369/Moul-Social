@@ -122,7 +122,14 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(LoginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Đăng Nhập Thất Bại.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        auth.signOut();
+        googleSignInClient.signOut();
     }
 }

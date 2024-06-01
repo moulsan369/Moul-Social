@@ -1,8 +1,8 @@
 package com.ntu.moulsocial;
 
 public class Friend {
-    private String name;
-    private String profilePictureUri;
+    private final String name;
+    private final String profilePictureUri;
 
     public Friend(String name, String profilePictureUri) {
         this.name = name;

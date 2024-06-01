@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -9,14 +11,22 @@
         android:id="@+id/editTextComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_your_comment"
+        android:hint="@string/nh_p_b_nh_lu_n_t_i_y"
         android:inputType="textMultiLine"
-        android:minHeight="100dp"/>
+        android:minHeight="100dp"
+        android:textColorHint="#546E7A"
+        tools:ignore="Autofill" />
 
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_style"
+        android:backgroundTint="#2196F3"
+        android:backgroundTintMode="screen"
+        android:fontFamily="@font/brawler"
+        android:text="@string/g_i"
+        android:textSize="14sp"
+        app:strokeColor="#00BCD4" />
 </LinearLayout>

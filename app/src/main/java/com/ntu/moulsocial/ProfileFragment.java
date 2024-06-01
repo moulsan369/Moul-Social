@@ -33,10 +33,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageView imageViewCoverPhoto;
     private ImageView imageViewProfilePicture;
-    private Uri selectedCoverPhotoUri;
-    private Uri selectedProfilePictureUri;
 
-    private RecyclerView recyclerViewPosts;
     private PostAdapter postAdapter;
     private List<Post> postList;
 
@@ -51,7 +48,7 @@ public class ProfileFragment extends Fragment {
 
         imageViewCoverPhoto = view.findViewById(R.id.imageViewCoverPhoto);
         imageViewProfilePicture = view.findViewById(R.id.imageViewProfilePicture);
-        recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
+        RecyclerView recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
 
         imageViewCoverPhoto.setOnClickListener(v -> selectImage(REQUEST_CODE_SELECT_IMAGE_COVER));
         imageViewProfilePicture.setOnClickListener(v -> selectImage(REQUEST_CODE_SELECT_IMAGE_PROFILE));
@@ -104,12 +101,10 @@ public class ProfileFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
                 if (requestCode == REQUEST_CODE_SELECT_IMAGE_COVER) {
-                    selectedCoverPhotoUri = selectedImageUri;
                     imageViewCoverPhoto.setImageBitmap(bitmap);
                 } else if (requestCode == REQUEST_CODE_SELECT_IMAGE_PROFILE) {
-                    selectedProfilePictureUri = selectedImageUri;
                     imageViewProfilePicture.setImageBitmap(bitmap);
-                    updateProfilePicturesInPosts(selectedProfilePictureUri);
+                    updateProfilePicturesInPosts(selectedImageUri);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

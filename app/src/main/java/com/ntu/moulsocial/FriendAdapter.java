@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder> {
 
-    private List<Friend> friendList;
+    private final List<Friend> friendList;
 
     public FriendAdapter(List<Friend> friendList) {
         this.friendList = friendList;
@@ -38,9 +38,9 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         return friendList.size();
     }
 
-    class FriendViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageViewProfilePicture;
-        private TextView textViewName;
+    static class FriendViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageViewProfilePicture;
+        private final TextView textViewName;
 
         public FriendViewHolder(@NonNull View itemView) {
             super(itemView);

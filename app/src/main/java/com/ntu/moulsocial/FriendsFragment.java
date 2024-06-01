@@ -15,22 +15,18 @@ import java.util.List;
 
 public class FriendsFragment extends Fragment {
 
-    private RecyclerView recyclerViewFriends;
-    private FriendAdapter friendAdapter;
-    private List<Friend> friendList;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
-        recyclerViewFriends = view.findViewById(R.id.recyclerViewFriends);
+        RecyclerView recyclerViewFriends = view.findViewById(R.id.recyclerViewFriends);
 
-        friendList = new ArrayList<>();
+        List<Friend> friendList = new ArrayList<>();
         // Add sample data
         friendList.add(new Friend("John Doe", null));
         friendList.add(new Friend("Jane Smith", null));
 
-        friendAdapter = new FriendAdapter(friendList);
+        FriendAdapter friendAdapter = new FriendAdapter(friendList);
         recyclerViewFriends.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewFriends.setAdapter(friendAdapter);
 

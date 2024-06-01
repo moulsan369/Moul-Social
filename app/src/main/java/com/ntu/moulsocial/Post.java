@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
-    private String content;
-    private String imageUri;
+    private final String content;
+    private final String imageUri;
     private String profilePictureUri;
     private int likeCount;
     private boolean isLiked;
-    private List<Comment> comments;
+    private final List<Comment> comments;
 
     public Post(String content, String imageUri) {
         this.content = content;

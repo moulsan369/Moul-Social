@@ -18,8 +18,6 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
 
-    private EditText editTextSearch;
-    private RecyclerView recyclerViewSearchResults;
     private PostAdapter postAdapter;
     private List<Post> postList;
     private List<Post> filteredPostList;
@@ -29,8 +27,8 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        editTextSearch = view.findViewById(R.id.editTextSearch);
-        recyclerViewSearchResults = view.findViewById(R.id.recyclerViewSearchResults);
+        EditText editTextSearch = view.findViewById(R.id.editTextSearch);
+        RecyclerView recyclerViewSearchResults = view.findViewById(R.id.recyclerViewSearchResults);
 
         postList = new ArrayList<>();
         filteredPostList = new ArrayList<>();

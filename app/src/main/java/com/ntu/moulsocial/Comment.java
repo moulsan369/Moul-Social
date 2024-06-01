@@ -1,8 +1,8 @@
 package com.ntu.moulsocial;
 
 public class Comment {
-    private String content;
-    private String profilePictureUri;
+    private final String content;
+    private final String profilePictureUri;
 
     public Comment(String content, String profilePictureUri) {
         this.content = content;

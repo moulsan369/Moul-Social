@@ -35,6 +35,11 @@
     <string name="submit">Submit</string>
     <string name="friend_name">Friend Name</string>
     <string name="notification">Notification</string>
+    <string name="nh_p_b_nh_lu_n_t_i_y">Nhập bình luận tại đây!!</string>
+    <string name="g_i">Gửi</string>
+    <string name="b_n_ang_ngh_g">Bạn đang nghĩ gì ?</string>
+    <string name="h_nh_nh">Hình Ảnh</string>
+    <string name="ng">Đăng</string>
 
     <!-- Add plurals here -->
     <plurals name="like_count">

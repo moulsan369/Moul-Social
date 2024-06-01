@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
 
-    private List<Notification> notificationList;
+    private final List<Notification> notificationList;
 
     public NotificationAdapter(List<Notification> notificationList) {
         this.notificationList = notificationList;
@@ -35,8 +35,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return notificationList.size();
     }
 
-    class NotificationViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewNotification;
+    static class NotificationViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textViewNotification;
 
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
