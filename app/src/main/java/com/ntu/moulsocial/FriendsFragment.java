@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsFragment extends Fragment {
+
+    private List<Friend> friendList;
+    private FriendAdapter friendAdapter;
+    private DatabaseHelper databaseHelper;
 
     @Nullable
     @Override
@@ -21,12 +23,9 @@ public class FriendsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         RecyclerView recyclerViewFriends = view.findViewById(R.id.recyclerViewFriends);
 
-        List<Friend> friendList = new ArrayList<>();
-        // Add sample data
-        friendList.add(new Friend("John Doe", null));
-        friendList.add(new Friend("Jane Smith", null));
-
-        FriendAdapter friendAdapter = new FriendAdapter(friendList);
+        databaseHelper = new DatabaseHelper(getContext());
+        friendList = databaseHelper.getAllFriends();
+        friendAdapter = new FriendAdapter(friendList);
         recyclerViewFriends.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewFriends.setAdapter(friendAdapter);
 

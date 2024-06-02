@@ -13,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +27,7 @@ public class SearchFragment extends Fragment {
     private PostAdapter postAdapter;
     private List<Post> postList;
     private List<Post> filteredPostList;
+    private DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -33,13 +40,30 @@ public class SearchFragment extends Fragment {
         postList = new ArrayList<>();
         filteredPostList = new ArrayList<>();
 
-        // Add sample data
-        postList.add(new Post("John Doe's post content", null));
-        postList.add(new Post("Jane Smith's post content", null));
+        postAdapter = new PostAdapter(filteredPostList, new PostAdapter.OnPostInteractionListener() {
+            @Override
+            public void onLikeClicked(int position) {
+                // Handle like click
+            }
 
-        postAdapter = new PostAdapter(filteredPostList, null);
+            @Override
+            public void onCommentClicked(int position) {
+                // Handle comment click
+            }
+
+            @Override
+            public void onShareClicked(int position) {
+                // Handle share click
+            }
+        });
         recyclerViewSearchResults.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewSearchResults.setAdapter(postAdapter);
+
+        // Initialize Firebase reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("posts");
+
+        // Fetch posts from Firebase
+        fetchPostsFromFirebase();
 
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,6 +79,25 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void fetchPostsFromFirebase() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                postList.clear();
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    postList.add(post);
+                }
+                filterPosts(""); // Initialize the filter to show all posts
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
+            }
+        });
     }
 
     private void filterPosts(String query) {

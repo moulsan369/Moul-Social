@@ -10,10 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsFragment extends Fragment {
+
+    private DatabaseReference databaseReference;
+    private List<Notification> notificationList;
+    private NotificationAdapter notificationAdapter;
 
     @Nullable
     @Override
@@ -21,14 +31,31 @@ public class NotificationsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
         RecyclerView recyclerViewNotifications = view.findViewById(R.id.recyclerViewNotifications);
 
-        List<Notification> notificationList = new ArrayList<>();
-        // Add sample data
-        notificationList.add(new Notification("John Doe liked your post."));
-        notificationList.add(new Notification("Jane Smith commented on your photo."));
-
-        NotificationAdapter notificationAdapter = new NotificationAdapter(notificationList);
+        notificationList = new ArrayList<>();
+        notificationAdapter = new NotificationAdapter(notificationList);
         recyclerViewNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewNotifications.setAdapter(notificationAdapter);
+
+        // Initialize Firebase reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("notifications");
+
+        // Fetch data from Firebase
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                notificationList.clear();
+                for (DataSnapshot notificationSnapshot : snapshot.getChildren()) {
+                    Notification notification = notificationSnapshot.getValue(Notification.class);
+                    notificationList.add(notification);
+                }
+                notificationAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
+            }
+        });
 
         return view;
     }

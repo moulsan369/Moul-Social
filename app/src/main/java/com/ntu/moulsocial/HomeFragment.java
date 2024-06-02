@@ -1,132 +1,43 @@
 package com.ntu.moulsocial;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements PostAdapter.OnPostInteractionListener {
+public class HomeFragment extends Fragment {
 
-    private static final int REQUEST_CODE_SELECT_IMAGE = 1;
-
-    private EditText editTextPostContent;
-    private ImageView imageViewSelectedImage;
-    private Uri selectedImageUri;
+    private RecyclerView recyclerViewPosts;
     private PostAdapter postAdapter;
-    private List<Post> postList;
+    private DatabaseHelper databaseHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        editTextPostContent = view.findViewById(R.id.editTextPostContent);
-        imageViewSelectedImage = view.findViewById(R.id.imageViewSelectedImage);
-        RecyclerView recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
-
-        Button buttonSelectImage = view.findViewById(R.id.buttonSelectImage);
-        Button buttonCreatePost = view.findViewById(R.id.buttonCreatePost);
-
-        postList = new ArrayList<>();
-        postAdapter = new PostAdapter(postList, this);
+        databaseHelper = new DatabaseHelper(getContext());
+        recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewPosts.setAdapter(postAdapter);
 
-        buttonSelectImage.setOnClickListener(v -> selectImage());
-        buttonCreatePost.setOnClickListener(v -> createPost());
+        loadPosts();
 
         return view;
     }
 
-    private void selectImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
-            try {
-                InputStream inputStream = getContext().getContentResolver().openInputStream(selectedImageUri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imageViewSelectedImage.setImageBitmap(bitmap);
-                imageViewSelectedImage.setVisibility(View.VISIBLE);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+    private void loadPosts() {
+        List<Post> postList = databaseHelper.getAllPosts();
+        if (getActivity() instanceof PostAdapter.OnPostInteractionListener) {
+            postAdapter = new PostAdapter(postList, (PostAdapter.OnPostInteractionListener) getActivity());
+            recyclerViewPosts.setAdapter(postAdapter);
+        } else {
+            throw new ClassCastException("Activity must implement PostAdapter.OnPostInteractionListener");
         }
-    }
-
-    private void createPost() {
-        String content = editTextPostContent.getText().toString().trim();
-        if (TextUtils.isEmpty(content) && selectedImageUri == null) {
-            return; // No content to post
-        }
-
-        Post post = new Post(content, selectedImageUri != null ? selectedImageUri.toString() : null);
-        postList.add(0, post); // Add new post at the top
-        postAdapter.notifyItemInserted(0);
-        editTextPostContent.setText("");
-        imageViewSelectedImage.setVisibility(View.GONE);
-        selectedImageUri = null;
-    }
-
-    @Override
-    public void onLikeClicked(int position) {
-        Post post = postList.get(position);
-        post.setLiked(!post.isLiked());
-        post.setLikeCount(post.isLiked() ? post.getLikeCount() + 1 : post.getLikeCount() - 1);
-        postAdapter.notifyItemChanged(position);
-    }
-
-    @Override
-    public void onCommentClicked(int position) {
-        showCommentDialog(position);
-    }
-
-    @Override
-    public void onShareClicked(int position) {
-        sharePost(position);
-    }
-
-    private void showCommentDialog(int position) {
-        CommentDialog commentDialog = new CommentDialog(getContext(), comment -> {
-            Post post = postList.get(position);
-            post.addComment(new Comment(comment, null)); // Assuming profile picture uri is null for now
-            postAdapter.notifyItemChanged(position);
-        });
-        commentDialog.show();
-    }
-
-    private void sharePost(int position) {
-        Post post = postList.get(position);
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, post.getContent());
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, "Share post"));
     }
 }

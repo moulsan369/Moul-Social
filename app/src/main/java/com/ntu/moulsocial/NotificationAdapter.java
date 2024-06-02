@@ -4,15 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
 
-    private final List<Notification> notificationList;
+    private List<Notification> notificationList;
 
     public NotificationAdapter(List<Notification> notificationList) {
         this.notificationList = notificationList;
@@ -27,7 +25,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
-        holder.bind(notificationList.get(position));
+        Notification notification = notificationList.get(position);
+        holder.textViewMessage.setText(notification.getMessage());
     }
 
     @Override
@@ -35,16 +34,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return notificationList.size();
     }
 
-    static class NotificationViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textViewNotification;
+    class NotificationViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewMessage;
 
-        public NotificationViewHolder(@NonNull View itemView) {
+        NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewNotification = itemView.findViewById(R.id.textViewNotification);
-        }
-
-        public void bind(Notification notification) {
-            textViewNotification.setText(notification.getContent());
+            textViewMessage = itemView.findViewById(R.id.textViewNotification);
         }
     }
 }

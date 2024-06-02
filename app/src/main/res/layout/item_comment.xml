@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -13,12 +14,14 @@
         android:src="@drawable/profile_picture_placeholder"
         android:scaleType="centerCrop"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/profile_picture_background" />
+        android:background="@drawable/profile_picture_background"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/textViewCommentContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Comment content here"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -48,13 +47,20 @@
                 android:textSize="24sp"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/textViewBasicInfo"
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_name"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                tools:ignore="Autofill,SpeakableTextPresentCheck" />
+
+            <Button
+                android:id="@+id/buttonSaveName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/basic_info_here"
-                android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"/>
+                android:text="@string/save_name" />
         </LinearLayout>
     </LinearLayout>
 
@@ -73,7 +79,8 @@
             android:layout_weight="1"
             android:backgroundTint="#03A9F4"
             android:text="@string/add_friend"
-            android:theme="@style/twitterButton" />
+            android:theme="@style/twitterButton"
+            tools:ignore="ButtonStyle,TextContrastCheck" />
 
         <Button
             android:id="@+id/buttonFollow"
@@ -84,7 +91,7 @@
             android:backgroundTint="#03A9F4"
             android:text="@string/follow"
             android:theme="@style/twitterButton"
-            tools:ignore="ButtonStyle" />
+            tools:ignore="ButtonStyle,TextContrastCheck" />
     </LinearLayout>
 
     <!-- Divider -->
@@ -103,4 +110,5 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:scrollbars="vertical"/>
+
 </LinearLayout>

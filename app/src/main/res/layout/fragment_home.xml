@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:style="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="8dp">
 
+    <!-- User input section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
             android:layout_height="40dp"
             android:src="@drawable/profile_picture_background"
             android:layout_marginEnd="8dp"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/profile_picture" />
 
         <EditText
             android:id="@+id/editTextPostContent"
@@ -30,13 +31,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="@string/b_n_ang_ngh_g"
+            android:hint="@string/whats_on_your_mind"
             android:inputType="textMultiLine"
             android:lines="1"
-            android:minHeight="48dp"
-            tools:ignore="Autofill" />
+            android:minHeight="48dp" />
     </LinearLayout>
 
+    <!-- Selected image preview -->
     <ImageView
         android:id="@+id/imageViewSelectedImage"
         android:layout_width="match_parent"
@@ -44,8 +45,9 @@
         android:scaleType="centerCrop"
         android:visibility="gone"
         android:layout_marginTop="8dp"
-        tools:ignore="ContentDescription" />
+        android:contentDescription="@string/selected_image_preview" />
 
+    <!-- Buttons for selecting image and creating post -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,10 +73,10 @@
             android:drawableEnd="@drawable/ic_send"
             android:padding="8dp"
             android:text="@string/post"
-            android:textColor="@color/black"
-            tools:ignore="ButtonStyle" />
+            android:textColor="@color/black" />
     </LinearLayout>
 
+    <!-- RecyclerView for displaying posts -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPosts"
         android:layout_width="match_parent"

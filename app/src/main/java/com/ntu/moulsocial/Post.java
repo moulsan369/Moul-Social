@@ -4,39 +4,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
-    private final String content;
-    private final String imageUri;
-    private String profilePictureUri;
-    private int likeCount;
+    private String id;
+    private String userId;
+    private String content;
+    private String imageUri;
+    private int likes;
     private boolean isLiked;
-    private final List<Comment> comments;
+    private List<String> comments;
 
-    public Post(String content, String imageUri) {
+    public Post(String id, String userId, String content, String imageUri, int likes) {
+        this.id = id;
+        this.userId = userId;
         this.content = content;
         this.imageUri = imageUri;
-        this.likeCount = 0;
+        this.likes = likes;
         this.isLiked = false;
         this.comments = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getImageUri() {
         return imageUri;
     }
 
-    public String getProfilePictureUri() {
-        return profilePictureUri;
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
-    public void setProfilePictureUri(String profilePictureUri) {
-        this.profilePictureUri = profilePictureUri;
+    public int getLikes() {
+        return likes;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
     public boolean isLiked() {
@@ -47,15 +70,15 @@ public class Post {
         isLiked = liked;
     }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public void incrementLikes() {
+        likes++;
     }
 
-    public List<Comment> getComments() {
+    public List<String> getComments() {
         return comments;
     }
 
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
+    public void addComment(String comment) {
+        comments.add(comment);
     }
 }

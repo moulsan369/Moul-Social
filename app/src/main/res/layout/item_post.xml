@@ -1,90 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="@drawable/item_background">
+    android:padding="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:gravity="center_vertical">
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/imageViewProfilePicture"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/profile_picture_placeholder"
-            android:scaleType="centerCrop"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/profile_picture_background"
+            android:src="@drawable/ic_profiles"
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/textViewContent"
+            android:id="@+id/textViewUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng bài tại đây"
-            android:textSize="16sp"
+            android:text="User Name"
+            android:textStyle="bold"
             tools:ignore="HardcodedText" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Post content"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/imageViewPostImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="8dp">
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/imageButtonLike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/like"
+            android:contentDescription="Like"
             android:src="@drawable/ic_like"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/textViewLikeCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="0"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
             tools:ignore="HardcodedText" />
 
         <ImageButton
             android:id="@+id/imageButtonComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/comment"
+            android:layout_marginStart="16dp"
+            android:contentDescription="Comment"
             android:src="@drawable/ic_comment"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
         <ImageButton
             android:id="@+id/imageButtonShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/share"
+            android:layout_marginStart="16dp"
+            android:contentDescription="Share"
             android:src="@drawable/ic_share"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="HardcodedText,TouchTargetSizeCheck" />
     </LinearLayout>
 
     <LinearLayout
@@ -92,14 +92,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp"
         android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewComments"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,9 +109,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Thêm bình luận"
-                android:padding="8dp"
-                android:background="@drawable/edittext_background"
+                android:hint="Add a comment"
                 tools:ignore="Autofill,HardcodedText,TextFields" />
 
             <ImageButton
@@ -121,10 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_send"
-                android:contentDescription="Bình luận mới"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp"
-                android:layout_marginStart="8dp"
+                android:contentDescription="Send"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
     </LinearLayout>

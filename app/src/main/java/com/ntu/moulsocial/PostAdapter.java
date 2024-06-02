@@ -1,31 +1,28 @@
 package com.ntu.moulsocial;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+
+    private List<Post> postList;
+    private OnPostInteractionListener listener;
 
     public interface OnPostInteractionListener {
         void onLikeClicked(int position);
         void onCommentClicked(int position);
         void onShareClicked(int position);
     }
-
-    private final List<Post> postList;
-    private final OnPostInteractionListener listener;
 
     public PostAdapter(List<Post> postList, OnPostInteractionListener listener) {
         this.postList = postList;
@@ -35,49 +32,69 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
-        return new PostViewHolder(itemView);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
+        return new PostViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post post = postList.get(position);
         holder.textViewContent.setText(post.getContent());
-        holder.textViewLikeCount.setText(String.valueOf(post.getLikeCount()));
+        holder.textViewLikes.setText(String.valueOf(post.getLikes()));
 
-        if (post.getImageUri() != null) {
+        if (post.isLiked()) {
+            holder.imageViewLike.setImageResource(R.drawable.ic_liked);
+        } else {
+            holder.imageViewLike.setImageResource(R.drawable.ic_like);
+        }
+
+        holder.imageViewLike.setOnClickListener(v -> {
+            if (!post.isLiked()) {
+                post.setLiked(true);
+                post.incrementLikes();
+                holder.imageViewLike.setImageResource(R.drawable.ic_liked);
+            } else {
+                post.setLiked(false);
+                post.setLikes(post.getLikes() - 1);
+                holder.imageViewLike.setImageResource(R.drawable.ic_like);
+            }
+            holder.textViewLikes.setText(String.valueOf(post.getLikes()));
+            listener.onLikeClicked(position);
+        });
+
+        holder.imageViewComment.setOnClickListener(v -> {
+            if (holder.commentSection.getVisibility() == View.GONE) {
+                holder.commentSection.setVisibility(View.VISIBLE);
+            } else {
+                holder.commentSection.setVisibility(View.GONE);
+            }
+            listener.onCommentClicked(position);
+        });
+
+        holder.imageViewShare.setOnClickListener(v -> listener.onShareClicked(position));
+
+        holder.buttonAddComment.setOnClickListener(v -> {
+            String comment = holder.editTextAddComment.getText().toString();
+            if (!comment.isEmpty()) {
+                post.addComment(comment);
+                holder.editTextAddComment.setText("");
+                notifyItemChanged(position);
+            }
+        });
+
+        // Load image using Glide
+        if (!post.getImageUri().isEmpty()) {
+            Glide.with(holder.imageViewPostImage.getContext())
+                    .load(post.getImageUri())
+                    .into(holder.imageViewPostImage);
             holder.imageViewPostImage.setVisibility(View.VISIBLE);
-            holder.imageViewPostImage.setImageURI(Uri.parse(post.getImageUri()));
         } else {
             holder.imageViewPostImage.setVisibility(View.GONE);
         }
 
-        if (post.getProfilePictureUri() != null) {
-            holder.imageViewProfilePicture.setImageURI(Uri.parse(post.getProfilePictureUri()));
-        }
-
-        holder.imageButtonLike.setImageResource(post.isLiked() ? R.drawable.ic_liked : R.drawable.ic_like);
-
-        holder.imageButtonLike.setOnClickListener(v -> listener.onLikeClicked(position));
-        holder.imageButtonComment.setOnClickListener(v -> {
-            holder.commentSection.setVisibility(holder.commentSection.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-        });
-        holder.imageButtonShare.setOnClickListener(v -> listener.onShareClicked(position));
-
-        holder.recyclerViewComments.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
-        holder.recyclerViewComments.setAdapter(new CommentAdapter(post.getComments()));
-
-        holder.buttonAddComment.setOnClickListener(v -> {
-            String commentContent = holder.editTextAddComment.getText().toString().trim();
-            if (!commentContent.isEmpty()) {
-                Comment newComment = new Comment(commentContent, post.getProfilePictureUri());
-                post.addComment(newComment);
-                holder.editTextAddComment.setText("");
-                holder.recyclerViewComments.getAdapter().notifyDataSetChanged();
-            } else {
-                Toast.makeText(holder.itemView.getContext(), "Comment cannot be empty", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Set up RecyclerView for comments
+        CommentAdapter commentAdapter = new CommentAdapter(post.getComments());
+        holder.recyclerViewComments.setAdapter(commentAdapter);
     }
 
     @Override
@@ -85,32 +102,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return postList.size();
     }
 
-    static class PostViewHolder extends RecyclerView.ViewHolder {
+    public Post getPostAtPosition(int position) {
+        return postList.get(position);
+    }
+
+    class PostViewHolder extends RecyclerView.ViewHolder {
         TextView textViewContent;
-        TextView textViewLikeCount;
+        TextView textViewLikes;
+        ImageView imageViewLike;
+        ImageView imageViewComment;
+        ImageView imageViewShare;
         ImageView imageViewPostImage;
-        ImageView imageViewProfilePicture;
-        ImageButton imageButtonLike;
-        ImageButton imageButtonComment;
-        ImageButton imageButtonShare;
+        LinearLayout commentSection;
         RecyclerView recyclerViewComments;
         EditText editTextAddComment;
         ImageButton buttonAddComment;
-        View commentSection;
 
-        public PostViewHolder(@NonNull View itemView) {
+        PostViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewContent = itemView.findViewById(R.id.textViewContent);
-            textViewLikeCount = itemView.findViewById(R.id.textViewLikeCount);
+            textViewLikes = itemView.findViewById(R.id.textViewLikeCount);
+            imageViewLike = itemView.findViewById(R.id.imageButtonLike);
+            imageViewComment = itemView.findViewById(R.id.imageButtonComment);
+            imageViewShare = itemView.findViewById(R.id.imageButtonShare);
             imageViewPostImage = itemView.findViewById(R.id.imageViewPostImage);
-            imageViewProfilePicture = itemView.findViewById(R.id.imageViewProfilePicture);
-            imageButtonLike = itemView.findViewById(R.id.imageButtonLike);
-            imageButtonComment = itemView.findViewById(R.id.imageButtonComment);
-            imageButtonShare = itemView.findViewById(R.id.imageButtonShare);
+            commentSection = itemView.findViewById(R.id.commentSection);
             recyclerViewComments = itemView.findViewById(R.id.recyclerViewComments);
             editTextAddComment = itemView.findViewById(R.id.editTextAddComment);
             buttonAddComment = itemView.findViewById(R.id.buttonAddComment);
-            commentSection = itemView.findViewById(R.id.commentSection);
         }
     }
 }

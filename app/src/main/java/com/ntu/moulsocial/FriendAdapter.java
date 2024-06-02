@@ -5,17 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder> {
 
-    private final List<Friend> friendList;
+    private List<Friend> friendList;
 
     public FriendAdapter(List<Friend> friendList) {
         this.friendList = friendList;
@@ -30,7 +26,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-        holder.bind(friendList.get(position));
+        Friend friend = friendList.get(position);
+        holder.textViewName.setText(friend.getFriendName());
+        // Load avatar using a library like Glide or Picasso
+        // Glide.with(holder.imageViewAvatar.getContext()).load(friend.getAvatarUri()).into(holder.imageViewAvatar);
     }
 
     @Override
@@ -38,25 +37,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         return friendList.size();
     }
 
-    static class FriendViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageViewProfilePicture;
-        private final TextView textViewName;
+    class FriendViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewName;
+        ImageView imageViewAvatar;
 
-        public FriendViewHolder(@NonNull View itemView) {
+        FriendViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewProfilePicture = itemView.findViewById(R.id.imageViewProfilePicture);
-            textViewName = itemView.findViewById(R.id.textViewName);
-        }
-
-        public void bind(Friend friend) {
-            textViewName.setText(friend.getName());
-            if (friend.getProfilePictureUri() != null) {
-                Glide.with(imageViewProfilePicture.getContext())
-                        .load(friend.getProfilePictureUri())
-                        .into(imageViewProfilePicture);
-            } else {
-                imageViewProfilePicture.setImageResource(R.drawable.profile_picture_placeholder);
-            }
+            textViewName = itemView.findViewById(R.id.textViewFriendName);
+            imageViewAvatar = itemView.findViewById(R.id.imageViewFriendAvatar);
         }
     }
 }

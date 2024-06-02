@@ -20,9 +20,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GithubAuthProvider;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private GoogleSignInClient googleSignInClient;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_web_client_id))
@@ -95,9 +98,13 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                } else {
+                    updateUI(null);
+                }
             } catch (ApiException e) {
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, "Đăng Nhập thất bại", e);
                 updateUI(null);
             }
         }
@@ -118,11 +125,49 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+            // Save user data to Firebase Realtime Database
+            saveUserToDatabase(user);
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         } else {
             Toast.makeText(LoginActivity.this, "Đăng Nhập Thất Bại.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveUserToDatabase(FirebaseUser user) {
+        String userId = user.getUid();
+        String userName = user.getDisplayName();
+        String email = user.getEmail();
+        String profilePictureUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
+
+        User userData = new User(userId, userName, email, profilePictureUrl);
+        databaseReference.child(userId).setValue(userData).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "User data saved successfully");
+            } else {
+                Log.d(TAG, "Failed to save user data");
+            }
+        });
+    }
+
+    // User data model
+    public static class User {
+        public String userId;
+        public String userName;
+        public String email;
+        public String profilePictureUrl;
+
+        public User() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public User(String userId, String userName, String email, String profilePictureUrl) {
+            this.userId = userId;
+            this.userName = userName;
+            this.email = email;
+            this.profilePictureUrl = profilePictureUrl;
         }
     }
 

@@ -3,20 +3,26 @@ package com.ntu.moulsocial;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.UUID;
 
 public class CommentDialog extends Dialog {
+
+    private String postId;
+    private DatabaseHelper databaseHelper;
     private EditText editTextComment;
-    private final OnCommentSubmitListener listener;
+    private Button buttonSubmit;
 
-    public interface OnCommentSubmitListener {
-        void onCommentSubmit(String comment);
-    }
-
-    public CommentDialog(Context context, OnCommentSubmitListener listener) {
+    public CommentDialog(@NonNull Context context, String postId) {
         super(context);
-        this.listener = listener;
+        this.postId = postId;
+        this.databaseHelper = new DatabaseHelper(context);
     }
 
     @Override
@@ -25,13 +31,17 @@ public class CommentDialog extends Dialog {
         setContentView(R.layout.dialog_comment);
 
         editTextComment = findViewById(R.id.editTextComment);
-        Button buttonSubmit = findViewById(R.id.buttonSubmit);
+        buttonSubmit = findViewById(R.id.buttonSubmit);
 
-        buttonSubmit.setOnClickListener(v -> {
-            String comment = editTextComment.getText().toString().trim();
-            if (!comment.isEmpty()) {
-                listener.onCommentSubmit(comment);
-                dismiss();
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String commentContent = editTextComment.getText().toString();
+                if (!commentContent.isEmpty()) {
+                    Comment comment = new Comment(UUID.randomUUID().toString(), postId, FirebaseAuth.getInstance().getCurrentUser().getUid(), commentContent);
+                    databaseHelper.addComment(comment);
+                    dismiss();
+                }
             }
         });
     }
