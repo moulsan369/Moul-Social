@@ -5,14 +5,21 @@ public class Comment {
     private String postId;
     private String userId;
     private String content;
+    private String profilePictureUrl;
 
-    public Comment(String id, String postId, String userId, String content) {
+    // No-argument constructor
+    public Comment() {
+    }
+
+    public Comment(String id, String postId, String userId, String content, String profilePictureUrl) {
         this.id = id;
         this.postId = postId;
         this.userId = userId;
         this.content = content;
+        this.profilePictureUrl = profilePictureUrl;
     }
 
+    // Getter and setter methods
     public String getId() {
         return id;
     }
@@ -43,5 +50,13 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }

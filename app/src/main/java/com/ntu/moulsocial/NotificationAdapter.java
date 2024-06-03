@@ -34,7 +34,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return notificationList.size();
     }
 
-    class NotificationViewHolder extends RecyclerView.ViewHolder {
+    static class NotificationViewHolder extends RecyclerView.ViewHolder {
         TextView textViewMessage;
 
         NotificationViewHolder(@NonNull View itemView) {

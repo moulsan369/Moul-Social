@@ -8,7 +8,6 @@
     android:background="@color/white"
     android:padding="8dp">
 
-    <!-- User input section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,10 +33,10 @@
             android:hint="@string/whats_on_your_mind"
             android:inputType="textMultiLine"
             android:lines="1"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            tools:ignore="Autofill" />
     </LinearLayout>
 
-    <!-- Selected image preview -->
     <ImageView
         android:id="@+id/imageViewSelectedImage"
         android:layout_width="match_parent"
@@ -47,7 +46,6 @@
         android:layout_marginTop="8dp"
         android:contentDescription="@string/selected_image_preview" />
 
-    <!-- Buttons for selecting image and creating post -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,7 +74,6 @@
             android:textColor="@color/black" />
     </LinearLayout>
 
-    <!-- RecyclerView for displaying posts -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPosts"
         android:layout_width="match_parent"

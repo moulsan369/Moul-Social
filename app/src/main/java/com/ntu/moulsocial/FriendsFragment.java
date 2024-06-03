@@ -15,7 +15,7 @@ public class FriendsFragment extends Fragment {
 
     private List<Friend> friendList;
     private FriendAdapter friendAdapter;
-    private DatabaseHelper databaseHelper;
+    private UserDataManager userDataManager;
 
     @Nullable
     @Override
@@ -23,9 +23,11 @@ public class FriendsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         RecyclerView recyclerViewFriends = view.findViewById(R.id.recyclerViewFriends);
 
-        databaseHelper = new DatabaseHelper(getContext());
-        friendList = databaseHelper.getAllFriends();
+
+        userDataManager = new UserDataManager(getContext());
+        friendList = userDataManager.getFriends();
         friendAdapter = new FriendAdapter(friendList);
+
         recyclerViewFriends.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewFriends.setAdapter(friendAdapter);
 

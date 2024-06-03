@@ -3,6 +3,7 @@
     <string name="google_web_client_id">641100524148-su99fri3ah6no8vrl9mjopf7o5tq2c7f.apps.googleusercontent.com</string>
     <string name="github_client_id">Ov23liNZ8b53Kd6qf3kD</string>
     <string name="github_client_secret">d7ac5d0423bb7ffb6f0e63efe39fe0a41e1aeb20</string>
+    <string name="github_redirect_uri">https://moulsocial.firebaseapp.com/__/auth/handler</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="profile_image">Profile Image</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -43,6 +44,7 @@
     <string name="enter_name" />
     <string name="save_name">\n Save</string>
     <string name="selected_image_preview">selected image preview</string>
+    <string name="user_email">email here\n</string>
 
     <!-- Add plurals here -->
     <plurals name="like_count">

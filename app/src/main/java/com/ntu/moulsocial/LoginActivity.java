@@ -1,12 +1,14 @@
 package com.ntu.moulsocial;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -15,43 +17,53 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN_GOOGLE = 9001;
 
-    private FirebaseAuth auth;
     private GoogleSignInClient googleSignInClient;
     private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+
+    private String CLIENT_ID;
+    private String CLIENT_SECRET;
+    private String REDIRECT_URI;
+    private static final String AUTH_URL = "https://github.com/login/oauth/authorize";
+    private static final String TOKEN_URL = "https://github.com/login/oauth/access_token";
+    private static final String USER_URL = "https://api.github.com/user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FirebaseApp.initializeApp(this);
-
-        auth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        // Load GitHub client ID and secret from strings.xml
+        CLIENT_ID = getString(R.string.github_client_id);
+        CLIENT_SECRET = getString(R.string.github_client_secret);
+        REDIRECT_URI = getString(R.string.github_redirect_uri);
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_web_client_id))
                 .requestEmail()
                 .build();
-        googleSignInClient = GoogleSignIn.getClient(LoginActivity.this, options);
+        googleSignInClient = GoogleSignIn.getClient(this, options);
+
+        mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
         ImageButton googleSignInButton = findViewById(R.id.img_btn_google);
         googleSignInButton.setOnClickListener(view -> signInWithGoogle());
@@ -66,28 +78,121 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signInWithGitHub() {
-        OAuthProvider.Builder provider = OAuthProvider.newBuilder("github.com");
+        String authUrl = AUTH_URL + "?client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&scope=user:email";
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl));
+        startActivity(intent);
+    }
 
-        List<String> scopes = new ArrayList<>();
-        scopes.add("user:email");
-        provider.setScopes(scopes);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        Task<AuthResult> pendingResultTask = auth.getPendingAuthResult();
-        if (pendingResultTask != null) {
-            pendingResultTask.addOnSuccessListener(
-                    authResult -> updateUI(authResult.getUser())
-            ).addOnFailureListener(
-                    e -> updateUI(null)
-            );
-        } else {
-            auth.startActivityForSignInWithProvider(this, provider.build())
-                    .addOnSuccessListener(
-                            authResult -> updateUI(authResult.getUser())
-                    )
-                    .addOnFailureListener(
-                            e -> updateUI(null)
-                    );
+        Uri uri = getIntent().getData();
+        if (uri != null && uri.toString().startsWith(REDIRECT_URI)) {
+            String code = uri.getQueryParameter("code");
+            if (code != null) {
+                new GitHubTokenTask().execute(code);
+            } else if (uri.getQueryParameter("error") != null) {
+                Toast.makeText(this, "GitHub login failed", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private class GitHubTokenTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... codes) {
+            try {
+                URL url = new URL(TOKEN_URL + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&code=" + codes[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Accept", "application/json");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+                connection.disconnect();
+
+                JSONObject json = new JSONObject(content.toString());
+                return json.getString("access_token");
+            } catch (Exception e) {
+                Log.e(TAG, "GitHub token request failed", e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String accessToken) {
+            if (accessToken != null) {
+                new GitHubUserTask().execute(accessToken);
+            } else {
+                Toast.makeText(LoginActivity.this, "GitHub login failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class GitHubUserTask extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... tokens) {
+            try {
+                URL url = new URL(USER_URL + "?access_token=" + tokens[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+                connection.disconnect();
+
+                return new JSONObject(content.toString());
+            } catch (Exception e) {
+                Log.e(TAG, "GitHub user request failed", e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject user) {
+            if (user != null) {
+                String userId = user.optString("id", null);
+                String userName = user.optString("name", "Unknown");
+                String userEmail = user.optString("email", "No email");
+                String userPhotoUrl = user.optString("avatar_url", null);
+
+                saveUserToFirebase(userId, userName, userEmail, userPhotoUrl);
+                saveUserToSharedPreferences(userId, userName, userEmail, userPhotoUrl);
+                updateUI();
+            } else {
+                Toast.makeText(LoginActivity.this, "GitHub login failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void saveUserToFirebase(String userId, String userName, String userEmail, String userPhotoUrl) {
+        User user = new User(userId, userName, userEmail, userPhotoUrl);
+        databaseReference.child(userId).setValue(user);
+    }
+
+    private void saveUserToSharedPreferences(String userId, String userName, String userEmail, String userPhotoUrl) {
+        SharedPreferences.Editor editor = getSharedPreferences("user_prefs", MODE_PRIVATE).edit();
+        editor.putString("user_id", userId);
+        editor.putString("user_name", userName);
+        editor.putString("user_email", userEmail);
+        editor.putString("user_photo_url", userPhotoUrl);
+        editor.apply();
+    }
+
+    private void updateUI() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -99,82 +204,39 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null) {
-                    firebaseAuthWithGoogle(account);
+                    handleSignInResult(account);
                 } else {
-                    updateUI(null);
+                    Toast.makeText(this, "Failed to sign in with Google", Toast.LENGTH_SHORT).show();
                 }
             } catch (ApiException e) {
-                Log.w(TAG, "Đăng Nhập thất bại", e);
-                updateUI(null);
+                Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(this, "Failed to sign in with Google", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+    private void handleSignInResult(GoogleSignInAccount account) {
+        String userId = account.getId();
+        String userName = account.getDisplayName();
+        String userEmail = account.getEmail();
+        String userPhotoUrl = account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : null;
+
+        // Authenticate with Firebase using Google Account
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = auth.getCurrentUser();
-                        updateUI(user);
-                    } else {
-                        updateUI(null);
-                    }
-                });
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            // Save user data to Firebase Realtime Database
-            saveUserToDatabase(user);
-
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(LoginActivity.this, "Đăng Nhập Thất Bại.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void saveUserToDatabase(FirebaseUser user) {
-        String userId = user.getUid();
-        String userName = user.getDisplayName();
-        String email = user.getEmail();
-        String profilePictureUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
-
-        User userData = new User(userId, userName, email, profilePictureUrl);
-        databaseReference.child(userId).setValue(userData).addOnCompleteListener(task -> {
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "User data saved successfully");
+                saveUserToFirebase(userId, userName, userEmail, userPhotoUrl);
+                saveUserToSharedPreferences(userId, userName, userEmail, userPhotoUrl);
+                updateUI();
             } else {
-                Log.d(TAG, "Failed to save user data");
+                Toast.makeText(LoginActivity.this, "Firebase authentication failed", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    // User data model
-    public static class User {
-        public String userId;
-        public String userName;
-        public String email;
-        public String profilePictureUrl;
-
-        public User() {
-            // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        }
-
-        public User(String userId, String userName, String email, String profilePictureUrl) {
-            this.userId = userId;
-            this.userName = userName;
-            this.email = email;
-            this.profilePictureUrl = profilePictureUrl;
-        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        auth.signOut();
         googleSignInClient.signOut();
     }
 }

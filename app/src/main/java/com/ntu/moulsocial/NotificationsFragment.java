@@ -9,19 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsFragment extends Fragment {
 
-    private DatabaseReference databaseReference;
     private List<Notification> notificationList;
     private NotificationAdapter notificationAdapter;
 
@@ -36,11 +31,13 @@ public class NotificationsFragment extends Fragment {
         recyclerViewNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewNotifications.setAdapter(notificationAdapter);
 
-        // Initialize Firebase reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("notifications");
+        fetchNotifications();
 
-        // Fetch data from Firebase
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        return view;
+    }
+
+    private void fetchNotifications() {
+        FirebaseUtils.getNotificationsReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 notificationList.clear();
@@ -56,7 +53,5 @@ public class NotificationsFragment extends Fragment {
                 // Handle possible errors
             }
         });
-
-        return view;
     }
 }

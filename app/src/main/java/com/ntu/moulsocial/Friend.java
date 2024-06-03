@@ -1,5 +1,11 @@
 package com.ntu.moulsocial;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
+
 public class Friend {
     private String friendId;
     private String friendName;
@@ -33,5 +39,16 @@ public class Friend {
 
     public void setAvatarUri(String avatarUri) {
         this.avatarUri = avatarUri;
+    }
+
+    public static String listToJson(List<Friend> friends) {
+        Gson gson = new Gson();
+        return gson.toJson(friends);
+    }
+
+    public static List<Friend> jsonToList(String json) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Friend>>() {}.getType();
+        return gson.fromJson(json, type);
     }
 }

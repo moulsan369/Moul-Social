@@ -8,11 +8,11 @@
     <!-- Cover Photo -->
     <ImageView
         android:id="@+id/imageViewCoverPhoto"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/cover_photo_placeholder"
-        android:contentDescription="@string/cover_photo" />
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:scaleType="centerCrop"
+    android:src="@drawable/cover_photo_placeholder"
+    android:contentDescription="@string/cover_photo" />
 
     <!-- Profile Picture and Basic Info -->
     <LinearLayout
@@ -47,51 +47,14 @@
                 android:textSize="24sp"
                 android:textStyle="bold"/>
 
-            <EditText
-                android:id="@+id/editTextName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_name"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                tools:ignore="Autofill,SpeakableTextPresentCheck" />
-
-            <Button
-                android:id="@+id/buttonSaveName"
+            <TextView
+                android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/save_name" />
+                android:text="@string/user_email"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"/>
         </LinearLayout>
-    </LinearLayout>
-
-    <!-- Action Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/buttonAddFriend"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#03A9F4"
-            android:text="@string/add_friend"
-            android:theme="@style/twitterButton"
-            tools:ignore="ButtonStyle,TextContrastCheck" />
-
-        <Button
-            android:id="@+id/buttonFollow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:backgroundTint="#03A9F4"
-            android:text="@string/follow"
-            android:theme="@style/twitterButton"
-            tools:ignore="ButtonStyle,TextContrastCheck" />
     </LinearLayout>
 
     <!-- Divider -->

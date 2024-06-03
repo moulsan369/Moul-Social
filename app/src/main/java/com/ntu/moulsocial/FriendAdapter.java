@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder> {
@@ -28,8 +29,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
         Friend friend = friendList.get(position);
         holder.textViewName.setText(friend.getFriendName());
-        // Load avatar using a library like Glide or Picasso
-        // Glide.with(holder.imageViewAvatar.getContext()).load(friend.getAvatarUri()).into(holder.imageViewAvatar);
+
+        // Load avatar using Glide
+        Glide.with(holder.imageViewAvatar.getContext())
+                .load(friend.getAvatarUri())
+                .placeholder(R.drawable.profile_picture_placeholder)
+                .into(holder.imageViewAvatar);
     }
 
     @Override
@@ -37,7 +42,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         return friendList.size();
     }
 
-    class FriendViewHolder extends RecyclerView.ViewHolder {
+    static class FriendViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName;
         ImageView imageViewAvatar;
 

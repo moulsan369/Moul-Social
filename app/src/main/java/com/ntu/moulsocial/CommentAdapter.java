@@ -3,16 +3,18 @@ package com.ntu.moulsocial;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private List<String> commentList;
+    private List<Comment> commentList;
 
-    public CommentAdapter(List<String> commentList) {
+    public CommentAdapter(List<Comment> commentList) {
         this.commentList = commentList;
     }
 
@@ -25,7 +27,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        holder.textViewComment.setText(commentList.get(position));
+        Comment comment = commentList.get(position);
+        holder.textViewContent.setText(comment.getContent());
+        Glide.with(holder.itemView.getContext())
+                .load(comment.getProfilePictureUrl())
+                .placeholder(R.drawable.profile_picture_placeholder)
+                .into(holder.imageViewProfile);
     }
 
     @Override
@@ -34,11 +41,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
     static class CommentViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewComment;
+        TextView textViewContent;
+        ImageView imageViewProfile;
 
         CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewComment = itemView.findViewById(R.id.textViewCommentContent);
+            textViewContent = itemView.findViewById(R.id.textViewCommentContent);
+            imageViewProfile = itemView.findViewById(R.id.imageViewProfile);
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.ntu.moulsocial;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +14,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements PostAdapter.OnPostInteractionListener {
 
+    private static final String TAG = "MainActivity";
+
     private String userId;
 
     @Override
@@ -26,9 +26,10 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.OnPos
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser == null) {
+            // If there is no current user, navigate to LoginActivity
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
-            finish();
+            finish(); // Finish MainActivity to prevent going back to it with the back button
             return;
         } else {
             userId = currentUser.getUid();
