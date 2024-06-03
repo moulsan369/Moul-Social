@@ -60,4 +60,8 @@ public class Post {
         Type type = new TypeToken<List<Post>>() {}.getType();
         return gson.fromJson(json, type);
     }
+
+    public String getTitle() {
+        return getTitle();
+    }
 }

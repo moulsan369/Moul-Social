@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Load GitHub client ID and secret from strings.xml
+
         CLIENT_ID = getString(R.string.github_client_id);
         CLIENT_SECRET = getString(R.string.github_client_secret);
         REDIRECT_URI = getString(R.string.github_redirect_uri);

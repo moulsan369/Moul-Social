@@ -100,7 +100,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 .into(holder.imageViewPostImage);
     }
 
-
     @Override
     public int getItemCount() {
         return postList.size();
@@ -155,4 +154,3 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
     }
 }
-

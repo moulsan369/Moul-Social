@@ -1,7 +1,5 @@
 package com.ntu.moulsocial;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +25,7 @@ public class SearchFragment extends Fragment {
     private PostAdapter postAdapter;
     private List<Post> postList;
     private List<Post> filteredPostList;
-    private SharedPreferences sharedPreferences;
-    private Gson gson;
+    private DatabaseReference postsRef;
 
     @Nullable
     @Override
@@ -39,8 +38,7 @@ public class SearchFragment extends Fragment {
         postList = new ArrayList<>();
         filteredPostList = new ArrayList<>();
 
-        sharedPreferences = getContext().getSharedPreferences("MoulSocialPrefs", Context.MODE_PRIVATE);
-        gson = new Gson();
+        postsRef = FirebaseDatabase.getInstance().getReference("posts");
 
         postAdapter = new PostAdapter(getContext(), filteredPostList, new PostAdapter.OnPostInteractionListener() {
             @Override
@@ -62,7 +60,7 @@ public class SearchFragment extends Fragment {
         recyclerViewSearchResults.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewSearchResults.setAdapter(postAdapter);
 
-        fetchPostsFromSharedPreferences();
+        fetchPostsFromFirebase();
 
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -80,13 +78,23 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    private void fetchPostsFromSharedPreferences() {
-        String postsJson = sharedPreferences.getString("posts", "");
-        if (!postsJson.isEmpty()) {
-            Type type = new TypeToken<List<Post>>() {}.getType();
-            postList = gson.fromJson(postsJson, type);
-            filterPosts("");
-        }
+    private void fetchPostsFromFirebase() {
+        postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postList.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    postList.add(post);
+                }
+                filterPosts(""); // Apply initial filter (empty query to show all posts)
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle possible errors
+            }
+        });
     }
 
     private void filterPosts(String query) {
@@ -95,7 +103,8 @@ public class SearchFragment extends Fragment {
             filteredPostList.addAll(postList);
         } else {
             for (Post post : postList) {
-                if (post.getContent().toLowerCase().contains(query.toLowerCase())) {
+                if (post.getContent().toLowerCase().contains(query.toLowerCase()) ||
+                        post.getTitle().toLowerCase().contains(query.toLowerCase())) {
                     filteredPostList.add(post);
                 }
             }
